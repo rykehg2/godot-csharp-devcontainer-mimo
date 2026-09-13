@@ -3,7 +3,7 @@
 Detailed specifications for gameplay behaviors.
 
 ## 1. Player Character
-Entity: `CharacterBody2D` (Godot) + `PlayerController` (C#).
+Entity: `CharacterBody2D` node in `src/GameGodot/scenes/` + movement math in `src/GameLogic` (service, pure C#).
 
 ### 1.1. Basic Movement
 - **Horizontal:** Acceleration-based movement. 

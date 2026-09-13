@@ -60,8 +60,10 @@ Defines:
 Executed via:
 
 ```bash
-dotnet test
-````
+bash AI/script/xunit.sh
+bash AI/script/gdunit.sh -a res://tests/
+bash AI/script/validate.sh
+```
 
 Responsible for:
 

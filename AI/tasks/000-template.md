@@ -73,9 +73,10 @@ List exactly what can be modified.
 
 > Example:
 >
-> * game/Game.Core/Player/**
-> * tests/Game.Core.Tests/**
-
+> * src/GameLogic/Services/**
+> * src/GameLogic.Tests/**
+> * src/GameGodot/scenes/** (only if engine interaction is required)
+> * src/GameGodot/tests/** (GDUnit)
 ---
 
 ### ❌ Restricted:

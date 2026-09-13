@@ -1,27 +1,42 @@
 # 🧠 Systems Architecture
 
 ## 🎮 Player System
-- **Controller:** Input handling and state management.
-- **Physics Logic:** C# class within `Game.Core` (Pure Logic).
+- **Controller (Godot):** Thin `CharacterBody2D` proxy — input, `_PhysicsProcess`, `MoveAndSlide`.
+- **Physics Logic (C#):** Domain math in `GameLogic` (pure .NET, no `Godot` types).
 
 ---
 
-## 🧪 Core Logic Layer (`Game.Core`)
-- **Authority:** Contains all math and decision-making logic.
+## 🧪 Core Logic Layer (`src/GameLogic`)
+- **Authority:** Contains all math and decision-making logic (velocity, gravity, jump impulse, rules).
 - **Constraint:** ⚠️ Zero dependency on `Godot` namespace for business rules.
-- **Unit Testing:** Validated via `xUnit` in `tests/Game.Core.Tests`.
+- **DI:** Services registered via `ServiceLocator` in `GameGodot` `Main._Ready()`.
+- **Unit Testing:** Validated via `xUnit` in `src/GameLogic.Tests` (`bash AI/script/xunit.sh`).
 
 ---
 
-## 🎮 Engine Layer (Godot)
-- **Proxy Nodes:** `CharacterBody2D` and `StaticBody2D` receive visuals and physical shapes.
-- **Bridge:** Script attached to nodes delegates calls to `Game.Core`.
+## 🎮 Engine Layer (`src/GameGodot`)
+- **Proxy Nodes:** `CharacterBody2D` (player), `StaticBody2D` (ground) hold visuals and collision shapes only.
+- **Bridge:** Scene scripts resolve services from `ServiceLocator` and apply results to nodes.
+- **Integration tests:** GDUnit4 under `src/GameGodot/tests/` (`res://tests/`).
 
 ---
 
 ## 🔗 Communication Pattern
-- **Downwards:** Godot callbacks (`_PhysicsProcess`) -> C# Logic methods.
-- **Upwards:** C# Logic Events/Signals -> Godot visual updates.
+- **Downwards:** Godot callbacks (`_PhysicsProcess`) → C# logic methods.
+- **Upwards:** Return values / signals → Godot motion and visual updates.
+
+---
+
+## 📂 Solution layout
+
+| Project | Role |
+| :--- | :--- |
+| `src/GameLogic` | Pure C# domain |
+| `src/GameGodot` | Godot 4 Mono engine layer |
+| `src/GameLogic.Tests` | xUnit |
+| `src/Game.sln` | Solution entrypoint |
+
+Seed source: `examples/godot/godot-csharp-decoupled/`. Architecture is kept; classes/nodes are rewritten to match `design/gdd.md`.
 
 ---
 
@@ -29,3 +44,4 @@
 
 * Clear separation between engine and logic
 * Tests focused on the C# layer
+* Godot nodes stay thin proxies

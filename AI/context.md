@@ -3,36 +3,45 @@
 This file defines how any AI agent should interact with this project.
 
 # 🛠 Technology Stack
-- **Engine:** Godot 4.3+ (C# Mono)
-- **Runtime:** .NET 10.0
+- **Engine:** Godot 4.6.2 (C# Mono)
+- **Runtime:** .NET 10.0 (projects target `net8.0` with `DOTNET_ROLL_FORWARD=Major`)
 - **Test Frameworks:** xUnit (.NET logic), GDUnit4 (Godot scenes/nodes)
 - **Environment:** Fedora 41 Dev Container (Headless)
 
 # 🚀 Critical Commands
-- **Build:** `dotnet build src/GameSolution.slnx`
+- **Build:** `dotnet build src/Game.sln` (or `dotnet test src/GameLogic.Tests/GameLogic.Tests.csproj`)
 - **Test (.NET):** `bash AI/script/xunit.sh`
 - **Test (Godot):** `bash AI/script/gdunit.sh -a res://tests/`
 - **Run ALL validation:** `bash AI/script/validate.sh`
 
 # 📂 Project Structure
-**src/** (Main Source & Solution)
-- `GameSolution.slnx`: Arquivo de solução central do .NET 10.
-- **Game.Core/**: Lógica de domínio (sem dependência de Godot).
-  - `Domain/`: Entidades e regras de negócio.
-  - `Services/`: Serviços de domínio e algoritmos.
-  - `ValueObjects/`: Estruturas de dados imutáveis.
-- **Game.Godot/**: Camada da Engine.
-  - `Scenes/`: Cenas e hierarquia de nodes.
-  - `Scripts/`: Lógica de Nodes (`Nodes/`), UI (`UI/`) e Autoloads (`Managers/`).
-- **xunitTests/**: Projetos de testes unitários técnicos para o Core.
+**src/** (Main Source & Solution — seeded from `examples/godot/godot-csharp-decoupled/` by postCreate; gitignored)
+- `Game.sln`: Central .NET solution (do **not** run `dotnet` from repo root without pointing here — avoid MSB1003).
+- **GameLogic/**: Pure C# domain logic (no Godot dependency).
+  - `Interfaces/`: Service contracts (e.g. `IPlayerMovementService`).
+  - `Services/`: Domain algorithms (movement, spawn, HUD, session).
+  - `Rules/`, `Models/`: Pure rules and immutable-ish state.
+  - `ServiceLocator.cs`: Simple DI used by Godot nodes.
+- **GameGodot/**: Engine layer.
+  - `scenes/`: Node hierarchy and thin C# proxies (`Main`, `objects/Player`, etc.).
+  - `tests/`: GDUnit4 integration tests (`res://tests/`).
+  - `addons/gdUnit4/`: Installed by postCreate.
+  - `project.godot`: Main scene + input map + display.
+- **GameLogic.Tests/**: xUnit tests for GameLogic.
 
-**AI/**: Prompts, tarefas e logs operacionais.
-**design/**: Contratos de comportamento e GDD (Fonte da Verdade).
+**AI/**: Prompts, roles, tasks, scripts, logs.
+**design/**: GDD, contracts (source of truth for behavior), roadmap.
+**docs/**: Architecture and technical reference.
+**examples/**: Seed/reference implementations.
+**.devcontainer/**: Reproducible Fedora 41 + Godot Mono + .NET environment.
 
-# � Learned Lessons (Troubleshooting)
+> Note: The current `src/` seed is a top-down “Dodge the Creeps” sample. Architecture (GameLogic / GameGodot / ServiceLocator / xUnit+GDUnit) must be kept; classes and nodes are rewritten to match `design/gdd.md` (platformer).
+
+# 🧠 Learned Lessons (Troubleshooting)
 * *C# Sync:* After adding new nodes with scripts, `dotnet build` is mandatory before running Godot tests.
 * *CLI Testing:* Always use the `--headless` flag when running Godot directly if not using helper scripts.
-* *Solution Path:* Always run `dotnet` commands pointing to `src/GameSolution.slnx` to avoid MSB1003.
+* *Solution Path:* Always run `dotnet` commands pointing to `src/Game.sln` (or a project under `src/`) to avoid MSB1003.
+* *Scripts:* Prefer `AI/script/xunit.sh`, `AI/script/gdunit.sh`, and `AI/script/validate.sh` — they already resolve paths and set `DOTNET_ROLL_FORWARD`.
 
 ---
 
@@ -63,7 +72,7 @@ Rules:
 
 # 📜 Contract Authority Rule
 
-/design/contracts.md defines the expected system behavior.
+`design/contracts/*.feature` defines the expected system behavior.
 
 Tasks must:
 
@@ -172,7 +181,8 @@ Before writing code:
 ## Run project
 
 ```bash
-godot --headless --path src/Game.Godot
+godot --headless --path src/GameGodot
+# or with editor (local Godot Mono): open src/GameGodot/project.godot
 ```
 
 ---
@@ -188,7 +198,7 @@ Used for:
 ---
 
 ## Run tests (Godot - INTEGRATION)
-**Script:** `bash AI/gdunit.sh -a res://tests/`
+**Script:** `bash AI/script/gdunit.sh -a res://tests/`
 Used for:
 
 * Scenes
@@ -202,7 +212,7 @@ Used for:
 ## Run ALL tests
 
 ```bash
-dotnet test && godot --headless --path game -s addons/gdUnit4/bin/GdUnitCmdTool.gd -a run
+bash AI/script/validate.sh
 ```
 
 ---
@@ -210,7 +220,8 @@ dotnet test && godot --headless --path game -s addons/gdUnit4/bin/GdUnitCmdTool.
 ## Build
 
 ```bash
-dotnet build
+dotnet build src/Game.sln
+# or: dotnet build src/GameLogic.Tests/GameLogic.Tests.csproj
 ```
 
 ---
@@ -291,12 +302,12 @@ Tests must:
 
 # 🔁 XP Loop
 
-1. Write .NET test (FAIL)
-2. Run `dotnet test`
-3. Implement minimal code (PASS)
+1. Write .NET test (FAIL) — prefer `GameLogic.Tests`
+2. Run `bash AI/script/xunit.sh`
+3. Implement minimal code in `GameLogic` (PASS)
 4. Run tests again
 5. Refactor
-6. If needed → add Godot test
+6. If engine/scene/physics needed → add GDUnit test under `src/GameGodot/tests/` and run `bash AI/script/gdunit.sh -a res://tests/`
 
 ---
 

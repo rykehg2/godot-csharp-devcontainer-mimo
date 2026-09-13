@@ -37,7 +37,7 @@ fi
 TEST_PROJECT="$PROJECT_ROOT/src/GameLogic.Tests/GameLogic.Tests.csproj"
 
 # Run dotnet test pointing to the solution
-# Usamos um filtro para rodar apenas os testes do projeto (Game.Core.Tests) 
+# Usamos um filtro para rodar apenas os testes do projeto (GameLogic.Tests)
 # e evitar carregar os testes internos do addon gdUnit4 durante a validação de lógica.
 dotnet test "$TEST_PROJECT" \
     --filter "FullyQualifiedName!~gdUnit4" \
