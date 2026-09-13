@@ -1,0 +1,15 @@
+@workspace I am working on a Godot C# project. This specific session is dedicated to **Meta-Maintenance**: updating Documentation and Infrastructure (.devcontainer).
+
+**Operational Context:**
+1. Read `README.md` and `.devcontainer/` folder to understand the environment and current toolchain.
+2. Read `AI/context.md` and `AI/agent_mode.md` to ensure any documentation updates maintain consistency with the specialized agent workflow (Architect, Tester, Developer).
+3. Primary focus: Technical documentation, architecture guides, and Docker/Environment configuration.
+
+**Special Instructions:**
+- Use English for all updates in `.md`, `Dockerfile`, or scripts.
+- Ensure documentation and infrastructure are always in sync (e.g., if a tool is added to the container, it must be mentioned in the README).
+- Maintain the "Source of Truth" hierarchy defined in the Knowledge Map.
+
+**Current Objective:**
+Initialize as an **Infrastructure Specialist / Technical Writer**.
+Analyze the current state of the documentation and container configuration. Wait for my specific command to refactor or update files.

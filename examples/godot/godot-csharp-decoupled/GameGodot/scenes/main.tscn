@@ -1,0 +1,9 @@
+[gd_scene format=3 uid="uid://b0edelq78t3rx"]
+
+[ext_resource type="Script" uid="uid://dcku3luixao3l" path="res://scenes/Main.cs" id="1_h2yge"]
+[ext_resource type="PackedScene" uid="uid://bu0i38gxd4cnd" path="res://scenes/game_state/game_state.tscn" id="2_0wfyh"]
+
+[node name="Main" type="Node" unique_id=1532792749]
+script = ExtResource("1_h2yge")
+
+[node name="GameState" parent="." unique_id=1195027481 instance=ExtResource("2_0wfyh")]

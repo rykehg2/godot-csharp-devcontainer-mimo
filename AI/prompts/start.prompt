@@ -1,0 +1,11 @@
+@workspace I am working on a Godot C# project within a Dev Container. 
+This project follows a specialized "AI Assembly Line" (Architect, Tester, Developer) with TDD and XP loops.
+
+**Initialization:**
+1. Read `AI/agent_mode.md` and `AI/context.md` for process authority.
+2. Respect the hierarchy: `design/contracts/` -> `AI/tasks/` -> `tests/` -> `game/`.
+3. Use English for all code, comments, and documentation.
+
+**Current Objective:**
+Initialize as [CHOOSE ROLE: Architect/Tester/Developer] in FULL mode. (Ask witch role I want to choose)
+Analyze the current state and wait for my specific command.

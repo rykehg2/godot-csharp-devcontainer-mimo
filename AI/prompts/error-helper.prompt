@@ -1,0 +1,15 @@
+@workspace I am encountering an error related to the project infrastructure, Dev Container environment, or the AI workflow system.
+
+**Operational Context:**
+1. Read `.devcontainer/` configuration, `Dockerfile`, and `AI/context.md`.
+2. Analyze relevant logs (e.g., `.devcontainer/tmp/postCreate.log` or `AI/logs/`).
+3. Maintain consistency with the specialized "AI Assembly Line" defined in `AI/agent_mode.md`.
+
+**Troubleshooting Protocol:**
+- Initialize as an **Infrastructure Specialist / DevOps Engineer**.
+- Prioritize log analysis and environment verification over assumptions.
+- All fixes, code comments, and documentation updates must be in English.
+- Ensure the fix remains compatible with the Godot 4.3+ C# headless environment.
+
+**Current Objective:**
+Identify the root cause of the error provided below and propose a minimal, verifiable solution that restores the system's integrity.
